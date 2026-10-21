@@ -1,15 +1,19 @@
-# Prognosevergleich: Betrieb auf dem UGREEN NAS (UGOS Pro)
+# Werkzeugsammler: Betrieb auf dem UGREEN NAS (UGOS Pro)
 # Docker → Projekt → Erstellen → diesen Inhalt einfügen → Bereitstellen.
 # Es wird nur das fertige Image aus der GitHub Container Registry gezogen,
 # auf dem NAS wird nichts gebaut.
 # Jeden Abend ab 20 Uhr werden die Prognosen von Forecast.Solar, Quartz und
 # (sobald Schlüssel und Anlagen-ID eingetragen sind) Solcast gespeichert.
+# Die Oberfläche mit dem Vergleich läuft im selben Container unter Port 8011.
 
 services:
-  prognosevergleich:
-    image: ghcr.io/${GHCR_OWNER:-devsdaub}/wbh-prognosevergleich:${TAG:-latest}
-    container_name: wbh-prognosevergleich
+  werkzeugsammler:
+    image: ghcr.io/${GHCR_OWNER:-devsdaub}/wbh-werkzeugsammler:${TAG:-latest}
+    container_name: wbh-werkzeugsammler
     restart: unless-stopped
+
+    ports:
+      - "8011:8000"
 
     volumes:
       # sammlung_tageswerte.csv und sammlung_roh.jsonl, dieser Ordner ist das komplette Ergebnis
@@ -29,3 +33,5 @@ services:
       # Solcast bleibt aus, solange eines der beiden Felder leer ist
       SOLCAST_API_KEY: ""
       SOLCAST_RESOURCE_ID: ""
+      # Messwerte und eigene Prognosen für den Vergleich, leer lassen zeigt nur die Werkzeuge
+      SOLARANALYTICS_URL: "http://192.168.2.166:8009"
