@@ -162,8 +162,8 @@ def runde(e: Einstellungen, versuche: dict) -> None:
             log.warning("%s Versuch %s fehlgeschlagen: %s", werkzeug, versuche[schluessel], repr(fehler)[:300])
 
 
-def main() -> None:
-    e = Einstellungen.aus_umgebung()
+def laufe(e: Einstellungen) -> None:
+    """Endlosschleife des Sammlers, als eigenes Programm oder als Thread neben der Oberfläche."""
     e.daten.mkdir(parents=True, exist_ok=True)
     log.info("Sammler gestartet: %s, Abruf ab %s Uhr, Anlage %s°/%s°, %s kWp",
              ", ".join(aktive_dienste(e)) or "kein Dienst aktiv", e.ab_stunde, e.neigung, e.ausrichtung, e.kwp)
@@ -177,6 +177,10 @@ def main() -> None:
             log.exception("Runde fehlgeschlagen")
         lebenszeichen(e)
         time.sleep(e.intervall_minuten * 60)
+
+
+def main() -> None:
+    laufe(Einstellungen.aus_umgebung())
 
 
 if __name__ == "__main__":
