@@ -22,6 +22,17 @@ def test_daten_ohne_solaranalytics(tmp_path, monkeypatch):
     assert len(daten["rohdaten"]) == 2
 
 
+def test_nur_ergebnisdateien_sind_herunterladbar(tmp_path, monkeypatch):
+    monkeypatch.setenv("DATEN", str(tmp_path))
+    (tmp_path / "sammlung_roh.jsonl").write_text('{"werkzeug": "quartz_icon"}\n', encoding="utf-8")
+    (tmp_path / "lebenszeichen.txt").write_text("2026-10-22", encoding="utf-8")
+    client = TestClient(web.app)
+
+    assert client.get("/api/dateien/sammlung_roh.jsonl").text.startswith('{"werkzeug"')
+    assert client.get("/api/dateien/lebenszeichen.txt").status_code == 404
+    assert client.get("/api/dateien/sammlung_tageswerte.csv").status_code == 404
+
+
 def test_startseite_liefert_die_oberflaeche():
     antwort = TestClient(web.app).get("/")
 

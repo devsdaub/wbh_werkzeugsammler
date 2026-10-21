@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -57,6 +57,18 @@ def startseite() -> FileResponse:
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+DATEIEN = ["sammlung_tageswerte.csv", "sammlung_roh.jsonl", "rueckblick_quartz.csv"]
+
+
+@app.get("/api/dateien/{name}")
+def datei(name: str) -> FileResponse:
+    """Die Ergebnisdateien zum Herunterladen, für die Auswertung in der Arbeit."""
+    pfad = sammler.Einstellungen.aus_umgebung().daten / name
+    if name not in DATEIEN or not pfad.exists():
+        raise HTTPException(status_code=404, detail="Datei nicht vorhanden")
+    return FileResponse(pfad, filename=name)
 
 
 @app.get("/api/daten")
