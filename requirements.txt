@@ -1,3 +1,5 @@
 quartz-solar-forecast==1.2.12
 requests
 tzdata
+fastapi==0.115.6
+uvicorn==0.34.0
