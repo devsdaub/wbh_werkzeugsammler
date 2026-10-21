@@ -1,0 +1,3 @@
+quartz-solar-forecast==1.2.12
+requests
+tzdata
