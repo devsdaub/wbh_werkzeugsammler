@@ -14,12 +14,12 @@ const LINIE = {
     solcast: { borderColor: FARBE.blau, borderWidth: 2, borderDash: [2, 3] },
 };
 
-// Angaben aus den Beschreibungen der Anbieter, für die Arbeit an den Quellen prüfen
+// Angaben aus den Dokumentationen der Anbieter, abgerufen am 22.10.2026, Quellen in der letzten Spalte
 const STECKBRIEF = [
-    ["SolarAnalytics", "diese Arbeit, Open Source, läuft lokal", "Faustregel mit Nachführung, Lernverfahren zum Vergleich, Auswahl per Diebold-Mariano-Test", "ICON über Open-Meteo", "ja, Ertragsquote der letzten 14 Messtage", "Tagessumme mit Spanne, 7 Tage"],
-    ["Forecast.Solar", "freie Schnittstelle ohne Konto", "Modellrechnung aus Wettervorhersage und Anlagendaten", "vom Dienst gewählt", "nein, im freien Zugang", "Stunden- und Tageswerte, heute und morgen"],
-    ["Quartz", "Open Climate Fix, Open Source, Python-Paket", "Lernverfahren, auf Daten fremder Anlagen trainiert", "ICON über Open-Meteo", "nein", "15-Minuten-Leistung, daraus Tagessumme"],
-    ["Solcast", "Hobby-Konto, 10 Abrufe am Tag", "Satellitendaten und Wettermodelle", "eigene Aufbereitung", "nein, im Hobby-Konto", "Tagessumme mit 10. und 90. Perzentil"],
+    ["SolarAnalytics", "diese Arbeit, Open Source, läuft lokal", "Faustregel mit Nachführung, Lernverfahren zum Vergleich, Auswahl per Diebold-Mariano-Test", "ICON über Open-Meteo", "ja, Ertragsquote der letzten 14 Messtage", "Tagessumme mit Spanne, 7 Tage", "github.com/devsdaub/wbh_solaranalytics"],
+    ["Forecast.Solar", "freie Schnittstelle ohne Konto, eine Modulfläche je Abruf", "PV-Modell aus historischer Einstrahlung (PVGIS) und Wettervorhersagen mehrerer Dienste", "Vorhersagen verschiedener Dienste", "nicht genutzt, Anpassung an Messwerte erst in bezahlten Tarifen", "Stunden- und Tageswerte, heute und morgen", "doc.forecast.solar"],
+    ["Quartz", "Open Climate Fix, Open Source, Python-Paket", "Gradient Boosting auf 9 Wettermodell-Variablen, trainiert auf 25.000 Anlagen in Großbritannien mit über 5 Jahren Daten", "GFS, ICON oder ECMWF, hier ICON über Open-Meteo", "nicht genutzt, Modell fest vortrainiert", "15-Minuten-Leistung über 48 Stunden, daraus Tagessumme", "github.com/openclimatefix/open-source-quartz-solar-forecast"],
+    ["Solcast", "Hobby-Konto, 10 Abrufe am Tag", "Satellitenbeobachtung, Wolkenverfolgung und Wettermodelle, 1 bis 2 km Auflösung, Aerosole und Albedo eingerechnet", "eigene Aufbereitung", "nicht genutzt", "Tagessumme mit 10. und 90. Perzentil, 3 Tage", "solcast.com, Bright 2019"],
 ];
 
 Chart.defaults.font.family = stil.getPropertyValue("--font-display").trim() || "system-ui";
@@ -141,9 +141,9 @@ function zeichneBalken(id, werte, name, istEigenes) {
 function steckbrief() {
     const zeilen = STECKBRIEF.map((z) => `<tr>${z.map((zelle, i) => i === 0 ? `<td><strong style="color:var(--color-heading)">${zelle}</strong></td>` : `<td>${zelle}</td>`).join("")}</tr>`).join("");
     return `<section class="card">
-        <div class="card-kopf"><h2>Die Werkzeuge im Überblick</h2><span class="legende">Angaben der Anbieter, Stand 21.10.2026</span></div>
+        <div class="card-kopf"><h2>Die Werkzeuge im Überblick</h2><span class="legende">Angaben der Anbieter, abgerufen am 22.10.2026</span></div>
         <div class="table-wrap"><table class="data-table">
-            <thead><tr><th>Werkzeug</th><th>Anbieter und Zugang</th><th>Verfahren</th><th>Wetterdaten</th><th>Eigene Messwerte</th><th>Ausgabe</th></tr></thead>
+            <thead><tr><th>Werkzeug</th><th>Anbieter und Zugang</th><th>Verfahren</th><th>Wetterdaten</th><th>Eigene Messwerte</th><th>Ausgabe</th><th>Quelle</th></tr></thead>
             <tbody>${zeilen}</tbody>
         </table></div>
     </section>`;
