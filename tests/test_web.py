@@ -38,3 +38,4 @@ def test_startseite_liefert_die_oberflaeche():
 
     assert antwort.status_code == 200
     assert "Werkzeugvergleich" in antwort.text
+    assert "CC BY 4.0" in antwort.text
