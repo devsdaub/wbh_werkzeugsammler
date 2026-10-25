@@ -1,6 +1,5 @@
 name: Build & Push Image
 
-# Baut bei jedem Push auf main das Image und legt es in der GitHub Container Registry ab.
 # Das NAS baut nichts selbst, es zieht nur ghcr.io/devsdaub/wbh-werkzeugsammler (docker-compose.yml).
 
 on:
